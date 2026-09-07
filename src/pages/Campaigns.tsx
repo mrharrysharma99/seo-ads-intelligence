@@ -9,6 +9,7 @@ interface CampaignsProps {
 
 interface CampaignDetail {
   name: string;
+  competitor: string;
   platform: string;
   status: string;
   spend: string;
@@ -41,6 +42,7 @@ interface CampaignDetail {
 const campaignDetails: CampaignDetail[] = [
   {
     name: "Bangalore 2BHK Push",
+    competitor: "MagicBricks",
     platform: "Google Ads",
     status: "active",
     spend: "₹82,400",
@@ -110,6 +112,7 @@ const campaignDetails: CampaignDetail[] = [
   },
   {
     name: "PG Listings - Hyderabad",
+    competitor: "NoBroker",
     platform: "Meta Ads",
     status: "active",
     spend: "₹45,200",
@@ -176,6 +179,7 @@ const campaignDetails: CampaignDetail[] = [
   },
   {
     name: "No Brokerage Campaign",
+    competitor: "Housing.com",
     platform: "Google Ads",
     status: "active",
     spend: "₹63,800",
@@ -243,6 +247,7 @@ const campaignDetails: CampaignDetail[] = [
   },
   {
     name: "Pune Rental Season",
+    competitor: "99acres",
     platform: "Google Ads",
     status: "paused",
     spend: "₹31,500",
@@ -305,6 +310,7 @@ const campaignDetails: CampaignDetail[] = [
   },
   {
     name: "Chennai Premium Flats",
+    competitor: "MagicBricks",
     platform: "Meta Ads",
     status: "active",
     spend: "₹28,900",
@@ -366,6 +372,7 @@ const campaignDetails: CampaignDetail[] = [
   },
   {
     name: "Mumbai Diwali Special",
+    competitor: "Zolo Stays",
     platform: "Google Ads",
     status: "ended",
     spend: "₹95,000",
@@ -524,6 +531,7 @@ export default function Campaigns({ onExport, onNewCampaign, onCreativeIdeas, on
             <thead>
               <tr>
                 <th>Campaign</th>
+                <th>Competitor</th>
                 <th>Platform</th>
                 <th>Status</th>
                 <th>Spend</th>
@@ -547,6 +555,15 @@ export default function Campaigns({ onExport, onNewCampaign, onCreativeIdeas, on
                         <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
+                  </td>
+                  <td>
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-sky bg-sky/10 border border-sky/25 rounded-md px-2 py-0.5">
+                      <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.4" fill="none"/>
+                        <path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" fill="none"/>
+                      </svg>
+                      {c.competitor}
+                    </span>
                   </td>
                   <td><span className="chip !text-[10px]">{c.platform}</span></td>
                   <td>
@@ -723,6 +740,21 @@ export default function Campaigns({ onExport, onNewCampaign, onCreativeIdeas, on
             <div className="p-6 space-y-5">
               {activeTab === "overview" && (
                 <div className="space-y-5 anim-in">
+                  {/* Competitor Info */}
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-sky/5 border border-sky/20">
+                    <div className="w-9 h-9 rounded-lg bg-sky/15 border border-sky/30 flex items-center justify-center flex-shrink-0">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-sky">
+                        <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.4" fill="none"/>
+                        <path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" fill="none"/>
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Running by Competitor</span>
+                      <p className="text-sm font-semibold text-sky">{selectedCampaign.competitor}</p>
+                    </div>
+                    <span className="chip !text-[9px]">{selectedCampaign.platform}</span>
+                  </div>
+
                   {/* Performance Summary */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
