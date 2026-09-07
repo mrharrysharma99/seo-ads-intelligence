@@ -25,8 +25,7 @@ interface Competitor {
 export default function Competitors() {
   const [selectedCompetitor, setSelectedCompetitor] = useState<Competitor | null>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "keywords" | "creatives" | "demographics" | "audience">("overview");
-
-  const competitors: Competitor[] = [
+  const [competitors, setCompetitors] = useState<Competitor[]>([
     {
       name: "NoBroker",
       domain: "nobroker.in",
@@ -358,7 +357,7 @@ export default function Competitors() {
         { month: "May", spend: 2.8 },
       ],
     },
-  ];
+  ]);
 
   const sharedKeywords = [
     { kw: "2bhk flat for rent", ourPos: 3, compPos: 2, comp: "MagicBricks" },
@@ -367,6 +366,66 @@ export default function Competitors() {
     { kw: "house for rent in bangalore", ourPos: 7, compPos: 4, comp: "99acres" },
     { kw: "1bhk rent in hyderabad", ourPos: 5, compPos: 6, comp: "NoBroker" },
   ];
+
+  const getCreativeDetails = (title: string, competitor: string) => {
+    const details: Record<string, { description: string; imagePrompt: string; videoPrompt: string; adCopy: string }> = {
+      "Zero Brokerage Flats in Bangalore": {
+        description: "Search ad targeting cost-conscious renters in Bangalore with zero brokerage messaging",
+        imagePrompt: "Modern 2BHK apartment interior in Bangalore, bright natural lighting, clean minimalist design, text overlay 'ZERO BROKERAGE' in bold green, price tag '₹15,000/mo', professional real estate photography style, 16:9 aspect ratio, vibrant colors",
+        videoPrompt: "15-second vertical video: Quick cuts of modern Bangalore apartments, text animations showing 'ZERO BROKERAGE' appearing with cash savings animation (₹25,000 saved), upbeat background music, end card with CTA 'Book Free Visit', smooth transitions, professional real estate tour style",
+        adCopy: "🏠 Zero Brokerage Flats in Bangalore\n✅ Direct owner connect\n✅ Save up to ₹25,000/year\n✅ 1000+ verified listings\n\nBook your free visit today! →"
+      },
+      "Direct Owner Connect - Save ₹25K": {
+        description: "Value-focused ad emphasizing direct owner connection and savings",
+        imagePrompt: "Split-screen comparison: Left side showing frustrated person with broker (red tint, crossed out), Right side showing happy person with property owner (green tint, checkmark), text 'SAVE ₹25,000' in large bold font, Indian urban setting, clean modern design",
+        videoPrompt: "20-second horizontal video: Story of a renter saving money - starts with broker fees being counted (₹25,000), transitions to direct owner meeting, happy handshake, text overlay 'DIRECT CONNECT = BIG SAVINGS', warm lighting, emotional storytelling style, end with app download CTA",
+        adCopy: "💰 Save ₹25,000 on Brokerage!\n\nConnect directly with property owners. No middlemen. No hidden fees.\n\n🔹 Verified owners only\n🔹 Instant responses\n🔹 Zero commission\n\nStart saving today! →"
+      },
+      "Verified Properties Only": {
+        description: "Trust-focused ad highlighting property verification and authenticity",
+        imagePrompt: "Shield/badge icon with checkmark in center, surrounded by property thumbnails, text '100% VERIFIED' in bold, trust badges and verification stamps, blue and green color scheme, professional and trustworthy design, clean white background",
+        videoPrompt: "12-second vertical video: Verification process animation - document scanning, property photos being checked, green checkmarks appearing one by one, text 'EVERY PROPERTY VERIFIED' with stamp animation, professional and trustworthy tone, end with 'Browse Verified Listings' CTA",
+        adCopy: "✅ 100% Verified Properties\n\nEvery listing personally verified by our team. No fake photos. No ghost properties.\n\n🔹 Real photos\n🔹 Real owners\n🔹 Real availability\n\nBrowse verified listings →"
+      },
+      "PG Stays Without Middlemen": {
+        description: "PG accommodation ad targeting students and young professionals",
+        imagePrompt: "Cozy PG room interior with bed, study table, and window view, young professional studying, text 'PG STAYS - NO BROKERAGE' overlay, warm lighting, budget-friendly aesthetic, text 'Starting ₹5,000/mo', youthful and energetic vibe",
+        videoPrompt: "18-second vertical video: Day in the life of a PG resident - morning routine, studying, cooking in shared kitchen, friendly roommates, text overlays showing amenities (WiFi, Food, AC), price reveal '₹5,000/mo only', upbeat music, end with 'Find Your PG' CTA",
+        adCopy: "🎓 PG Stays Without Brokerage!\n\nPerfect for students & young professionals\n\n🔹 Starting ₹5,000/month\n🔹 WiFi + Food included\n🔹 Near IT parks & colleges\n🔹 Direct owner connect\n\nFind your perfect PG →"
+      },
+      "Premium Flats in Top Localities": {
+        description: "Luxury-focused ad targeting premium segment renters",
+        imagePrompt: "Luxury apartment interior with high-end furnishings, floor-to-ceiling windows with city view, modern kitchen, text 'PREMIUM FLATS' in elegant gold font, location pins for top localities, sophisticated and upscale design, dark elegant background",
+        videoPrompt: "25-second cinematic video: Luxury apartment tour - grand entrance, spacious living room, modern kitchen, master bedroom with city view, amenities showcase (pool, gym, clubhouse), text overlays with locality names, elegant background music, end with 'Schedule Premium Visit' CTA",
+        adCopy: "✨ Premium Flats in Top Localities\n\nExperience luxury living in Bangalore's finest neighborhoods.\n\n🔹 Indiranagar | Koramangala | Whitefield\n🔹 Starting ₹25,000/month\n🔹 Fully furnished options\n🔹 Premium amenities\n\nSchedule your visit →"
+      },
+      "Verified Listings - 100% Genuine": {
+        description: "Trust and authenticity focused ad with strong verification messaging",
+        imagePrompt: "Large verification badge with '100% GENUINE' text, multiple property cards with green checkmarks, trust indicators and security icons, clean professional design, blue and white color scheme, emphasis on reliability and authenticity",
+        videoPrompt: "15-second video: Verification process showcase - document verification animation, property photo validation, owner ID check, green checkmarks appearing, text '100% GENUINE LISTINGS' with stamp effect, professional and trustworthy tone, end with 'Browse with Confidence' CTA",
+        adCopy: "🛡️ Verified Listings - 100% Genuine\n\nEvery property verified. Every photo real. Every owner authenticated.\n\n🔹 3-step verification process\n🔹 Real-time availability\n🔹 Genuine owner details\n\nBrowse with confidence →"
+      },
+      "Find Your Dream Home Today": {
+        description: "Emotional appeal ad focusing on finding the perfect home",
+        imagePrompt: "Happy family/couple in front of their new home, warm golden hour lighting, text 'FIND YOUR DREAM HOME' in friendly font, heart icon, welcoming and emotional design, soft warm colors, Indian family in modern apartment setting",
+        videoPrompt: "20-second emotional video: Journey of finding a home - scrolling through listings, visiting properties, finally finding 'the one', happy moment of moving in, text 'Your Dream Home Awaits', warm emotional music, end with 'Start Your Search' CTA",
+        adCopy: "🏡 Find Your Dream Home Today!\n\nYour perfect home is just a search away.\n\n🔹 10,000+ active listings\n🔹 All budgets & locations\n🔹 Instant owner connect\n🔹 Zero brokerage\n\nStart your home search →"
+      },
+      "Luxury Apartments Starting ₹25K": {
+        description: "Premium segment ad with clear price anchor for luxury apartments",
+        imagePrompt: "Luxury apartment exterior with modern architecture, swimming pool and amenities visible, text 'LUXURY APARTMENTS' in premium gold font, price tag 'Starting ₹25,000/mo', upscale and sophisticated design, twilight photography style",
+        videoPrompt: "22-second luxury video: Premium apartment showcase - grand lobby, infinity pool, modern gym, spacious apartments with city views, text overlays highlighting amenities and price, elegant background music, cinematic quality, end with 'Experience Luxury Living' CTA",
+        adCopy: "🌟 Luxury Apartments Starting ₹25K\n\nLive the life you deserve in premium residences.\n\n🔹 World-class amenities\n🔹 Prime locations\n🔹 Fully furnished options\n🔹 Starting ₹25,000/month\n\nExperience luxury →"
+      }
+    };
+
+    return details[title] || {
+      description: `Ad creative currently running by ${competitor}`,
+      imagePrompt: `Professional real estate advertisement for ${competitor}, modern apartment interior, clean design, text overlay with property details, Indian urban setting, 16:9 aspect ratio, vibrant colors, professional photography style`,
+      videoPrompt: `15-20 second real estate video ad for ${competitor}, property tour with smooth transitions, text animations highlighting key features, upbeat background music, professional quality, end with clear CTA, vertical format for social media`,
+      adCopy: `🏠 ${title}\n\nFind the perfect property with ${competitor}.\n\n✅ Verified listings\n✅ Direct owner connect\n✅ Zero brokerage\n\nBrowse now →`
+    };
+  };
 
   const tabs = [
     { id: "overview", label: "Overview" },
@@ -409,9 +468,27 @@ export default function Competitors() {
                 <h3 className="text-sm font-semibold text-ink group-hover:text-grn transition-colors">{comp.name}</h3>
                 <span className="url-tag !text-[10px]">{comp.domain}</span>
               </div>
-              <div className={`flex items-center gap-1 text-xs font-semibold ${
-                comp.trend === "up" ? "text-grn" : comp.trend === "down" ? "text-ros" : "text-amb"
-              }`}>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm(`Remove ${comp.name} from competitor tracking?`)) {
+                      setCompetitors(competitors.filter(c => c.domain !== comp.domain));
+                      if (selectedCompetitor?.domain === comp.domain) {
+                        setSelectedCompetitor(null);
+                      }
+                    }
+                  }}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-ros/10 text-dim hover:text-ros"
+                  title="Remove competitor"
+                >
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </button>
+                <div className={`flex items-center gap-1 text-xs font-semibold ${
+                  comp.trend === "up" ? "text-grn" : comp.trend === "down" ? "text-ros" : "text-amb"
+                }`}>
                 <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
                   {comp.trend === "up" ? (
                     <path d="M2 12l6-8 6 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
@@ -422,6 +499,7 @@ export default function Competitors() {
                   )}
                 </svg>
                 {comp.trend}
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-2 mb-3">
@@ -760,48 +838,119 @@ export default function Competitors() {
 
               {activeTab === "creatives" && (
                 <div className="space-y-4 anim-in">
+                  {/* Info Banner */}
+                  <div className="flex items-center gap-2 p-3 rounded-lg bg-amb/5 border border-amb/20">
+                    <span className="dt dt-ai">AI</span>
+                    <span className="text-xs text-mut">Actual creatives detected from competitor ads. Use the AI prompts below to generate similar visuals.</span>
+                  </div>
+
                   <div className="panel">
                     <div className="panel-hd">
                       <div>
-                        <h3 className="text-sm font-semibold text-ink">Ad Creatives</h3>
-                        <p className="text-xs text-dim mt-0.5">Top-performing ad copies and creatives</p>
+                        <h3 className="text-sm font-semibold text-ink">Active Ad Creatives</h3>
+                        <p className="text-xs text-dim mt-0.5">Real creatives currently running by {selectedCompetitor.name}</p>
                       </div>
                       <span className="chip">
                         <span className="dt dt-ai">AI</span>
                         Scored
                       </span>
                     </div>
-                    <div className="panel-bd space-y-3">
-                      {selectedCompetitor.topCreatives.map((ad, i) => (
-                        <div key={i} className="p-4 rounded-lg bg-panel2/50 border border-line/50">
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex-1">
-                              <p className="text-xs font-semibold text-ink mb-1">{ad.title}</p>
-                              <span className="chip !text-[9px]">{ad.type}</span>
+                    <div className="panel-bd space-y-4">
+                      {selectedCompetitor.topCreatives.map((ad, i) => {
+                        const creativeDetails = getCreativeDetails(ad.title, selectedCompetitor.name);
+                        return (
+                          <div key={i} className="p-4 rounded-xl bg-panel2/50 border border-line/50 space-y-3">
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <p className="text-xs font-semibold text-ink mb-1">{ad.title}</p>
+                                <div className="flex items-center gap-2">
+                                  <span className="chip !text-[9px]">{ad.type}</span>
+                                  <span className="text-[10px] text-dim">• {creativeDetails.description}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold" style={{
+                                  background: ad.score >= 90 ? "rgba(62,207,142,.15)" : ad.score >= 80 ? "rgba(242,179,61,.12)" : "rgba(76,195,247,.12)",
+                                  color: ad.score >= 90 ? "#3ecf8e" : ad.score >= 80 ? "#f2b33d" : "#4cc3f7",
+                                  border: `1px solid ${ad.score >= 90 ? "rgba(62,207,142,.3)" : ad.score >= 80 ? "rgba(242,179,61,.3)" : "rgba(76,195,247,.3)"}`
+                                }}>
+                                  {ad.score}
+                                </div>
+                              </div>
                             </div>
                             <div className="flex items-center gap-2">
-                              <div className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold" style={{
-                                background: ad.score >= 90 ? "rgba(62,207,142,.15)" : ad.score >= 80 ? "rgba(242,179,61,.12)" : "rgba(76,195,247,.12)",
-                                color: ad.score >= 90 ? "#3ecf8e" : ad.score >= 80 ? "#f2b33d" : "#4cc3f7",
-                                border: `1px solid ${ad.score >= 90 ? "rgba(62,207,142,.3)" : ad.score >= 80 ? "rgba(242,179,61,.3)" : "rgba(76,195,247,.3)"}`
-                              }}>
-                                {ad.score}
+                              <div className="flex-1 h-1.5 rounded-full bg-panel2 overflow-hidden">
+                                <div
+                                  className={`h-full rounded-full ${
+                                    ad.score >= 90 ? "bg-grn" : ad.score >= 80 ? "bg-amb" : "bg-sky"
+                                  }`}
+                                  style={{ width: `${ad.score}%` }}
+                                />
+                              </div>
+                              <span className="text-[10px] font-mono font-bold text-ink">{ad.score}/100</span>
+                            </div>
+
+                            {/* AI Prompts Section */}
+                            <div className="pt-3 border-t border-line/40 space-y-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-[10px] font-bold text-amb uppercase tracking-wider">🎨 AI Prompts</span>
+                                <span className="text-[9px] text-dim">Copy & use with AI image/video generators</span>
+                              </div>
+                              
+                              {/* Image Prompt */}
+                              <div className="p-2.5 rounded-lg bg-bg1/60 border border-line/40 group/prompt">
+                                <div className="flex items-center justify-between mb-1.5">
+                                  <span className="text-[9px] font-semibold text-sky uppercase tracking-wider">Image Generation Prompt</span>
+                                  <button
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(creativeDetails.imagePrompt);
+                                      alert("Image prompt copied!");
+                                    }}
+                                    className="opacity-0 group-hover/prompt:opacity-100 transition-opacity text-[9px] text-grn hover:text-grn font-semibold"
+                                  >
+                                    📋 Copy
+                                  </button>
+                                </div>
+                                <p className="text-[10.5px] text-mut leading-relaxed font-mono">{creativeDetails.imagePrompt}</p>
+                              </div>
+
+                              {/* Video Prompt */}
+                              <div className="p-2.5 rounded-lg bg-bg1/60 border border-line/40 group/prompt">
+                                <div className="flex items-center justify-between mb-1.5">
+                                  <span className="text-[9px] font-semibold text-vio uppercase tracking-wider">Video Generation Prompt</span>
+                                  <button
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(creativeDetails.videoPrompt);
+                                      alert("Video prompt copied!");
+                                    }}
+                                    className="opacity-0 group-hover/prompt:opacity-100 transition-opacity text-[9px] text-grn hover:text-grn font-semibold"
+                                  >
+                                    📋 Copy
+                                  </button>
+                                </div>
+                                <p className="text-[10.5px] text-mut leading-relaxed font-mono">{creativeDetails.videoPrompt}</p>
+                              </div>
+
+                              {/* Ad Copy */}
+                              <div className="p-2.5 rounded-lg bg-bg1/60 border border-line/40 group/prompt">
+                                <div className="flex items-center justify-between mb-1.5">
+                                  <span className="text-[9px] font-semibold text-grn uppercase tracking-wider">Ad Copy Template</span>
+                                  <button
+                                    onClick={() => {
+                                      navigator.clipboard.writeText(creativeDetails.adCopy);
+                                      alert("Ad copy copied!");
+                                    }}
+                                    className="opacity-0 group-hover/prompt:opacity-100 transition-opacity text-[9px] text-grn hover:text-grn font-semibold"
+                                  >
+                                    📋 Copy
+                                  </button>
+                                </div>
+                                <p className="text-[10.5px] text-mut leading-relaxed">{creativeDetails.adCopy}</p>
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 h-1.5 rounded-full bg-panel2 overflow-hidden">
-                              <div
-                                className={`h-full rounded-full ${
-                                  ad.score >= 90 ? "bg-grn" : ad.score >= 80 ? "bg-amb" : "bg-sky"
-                                }`}
-                                style={{ width: `${ad.score}%` }}
-                              />
-                            </div>
-                            <span className="text-[10px] font-mono font-bold text-ink">{ad.score}/100</span>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
