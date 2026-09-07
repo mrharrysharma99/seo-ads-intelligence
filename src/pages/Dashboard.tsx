@@ -1,4 +1,8 @@
-export default function Dashboard() {
+interface DashboardProps {
+  onExport: () => void;
+}
+
+export default function Dashboard({ onExport }: DashboardProps) {
   const metrics = [
     { label: "Organic Traffic", value: "1.24M", change: "+12.3%", up: true, icon: "M2 14l4-4 3 3 5-7" },
     { label: "Domain Rating", value: "67", change: "+3", up: true, icon: "M8 1a5 5 0 015 5c0 1.5-.7 2.8-1.8 3.7L8 14l-3.2-4.3A5 5 0 018 1z" },
@@ -32,7 +36,7 @@ export default function Dashboard() {
         </div>
         <div className="flex items-center gap-2">
           <span className="chip">Last 30 days</span>
-          <button className="btn btn-ghost !text-xs">
+          <button onClick={onExport} className="btn btn-ghost !text-xs">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
               <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>

@@ -1,4 +1,11 @@
-export default function Campaigns() {
+interface CampaignsProps {
+  onExport: () => void;
+  onNewCampaign: () => void;
+  onCreativeIdeas: () => void;
+  onCampaignIdeas: () => void;
+}
+
+export default function Campaigns({ onExport, onNewCampaign, onCreativeIdeas, onCampaignIdeas }: CampaignsProps) {
   const campaigns = [
     { name: "Bangalore 2BHK Push", platform: "Google Ads", status: "active", spend: "₹82,400", impressions: "145K", clicks: "8.2K", ctr: "5.7%", conversions: 342, costPerConv: "₹241" },
     { name: "PG Listings - Hyderabad", platform: "Meta Ads", status: "active", spend: "₹45,200", impressions: "98K", clicks: "4.1K", ctr: "4.2%", conversions: 187, costPerConv: "₹242" },
@@ -19,19 +26,32 @@ export default function Campaigns() {
   return (
     <div className="space-y-6 reveal-stagger">
       {/* Header */}
-      <div className="flex items-end justify-between">
+      <div className="flex items-end justify-between flex-wrap gap-3">
         <div>
           <h1 className="font-display text-2xl font-bold text-ink">Ad Campaigns</h1>
-          <p className="text-sm text-mut mt-1">Performance tracking and creative intelligence</p>
+          <p className="text-sm text-mut mt-1">Performance tracking, creative intelligence & AI-powered ideas</p>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="btn btn-ghost !text-xs">
+        <div className="flex items-center gap-2 flex-wrap">
+          <button onClick={onExport} className="btn btn-ghost !text-xs">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
               <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
             Export Report
           </button>
-          <button className="btn btn-prime !text-xs">
+          <button onClick={onCreativeIdeas} className="btn btn-amber !text-xs">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1l2 4 4.5.7-3.3 3.1.8 4.5L8 11.2 3.9 13.3l.8-4.5L1.5 5.7 6 5z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" fill="none"/>
+            </svg>
+            Creative Ideas
+          </button>
+          <button onClick={onCampaignIdeas} className="btn btn-soft !text-xs">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="M2 12l4-4 3 3 5-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 4h4v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Campaign Ideas
+          </button>
+          <button onClick={onNewCampaign} className="btn btn-prime !text-xs">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
               <path d="M8 2v12M2 8h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
@@ -125,10 +145,18 @@ export default function Campaigns() {
             <h3 className="text-sm font-semibold text-ink">Ad Creative Performance</h3>
             <p className="text-xs text-dim mt-0.5">AI-scored creative effectiveness</p>
           </div>
-          <span className="chip">
-            <span className="dt dt-ai">AI</span>
-            Scored
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="chip">
+              <span className="dt dt-ai">AI</span>
+              Scored
+            </span>
+            <button onClick={onCreativeIdeas} className="btn btn-amber !text-[10px] !py-1.5 !px-2.5">
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1l2 4 4.5.7-3.3 3.1.8 4.5L8 11.2 3.9 13.3l.8-4.5L1.5 5.7 6 5z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" fill="none"/>
+              </svg>
+              Get Ideas
+            </button>
+          </div>
         </div>
         <div className="panel-bd space-y-2">
           {adCreatives.map((ad, i) => (
@@ -155,6 +183,44 @@ export default function Campaigns() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* AI Campaign Ideas Quick Preview */}
+      <div className="panel">
+        <div className="panel-hd">
+          <div>
+            <h3 className="text-sm font-semibold text-ink">AI Campaign Recommendations</h3>
+            <p className="text-xs text-dim mt-0.5">Market-gap opportunities identified by AI</p>
+          </div>
+          <button onClick={onCampaignIdeas} className="btn btn-soft !text-xs">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="M2 12l4-4 3 3 5-7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 4h4v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            View All Ideas
+          </button>
+        </div>
+        <div className="panel-bd">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {[
+              { title: "IT Corridor PG Push", city: "Bangalore", confidence: 92, expected: "450+ leads", budget: "₹75K/mo" },
+              { title: "Monsoon Moving Season", city: "Pan India", confidence: 88, expected: "2,800+ conv.", budget: "₹1.2L/mo" },
+              { title: "No Brokerage Trust", city: "All Cities", confidence: 85, expected: "500K+ impr.", budget: "₹50K/mo" },
+            ].map((rec, i) => (
+              <div key={i} className="p-3 rounded-lg bg-panel2/50 border border-line/50 hover:border-grn/30 transition-colors cursor-pointer" onClick={onCampaignIdeas}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] font-semibold text-grn">{rec.confidence}% confidence</span>
+                  <span className="chip !text-[9px]">{rec.city}</span>
+                </div>
+                <h4 className="text-xs font-semibold text-ink mb-1">{rec.title}</h4>
+                <div className="flex items-center justify-between text-[10px]">
+                  <span className="text-dim">{rec.budget}</span>
+                  <span className="text-grn font-semibold">{rec.expected}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

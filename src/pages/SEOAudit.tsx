@@ -1,4 +1,8 @@
-export default function SEOAudit() {
+interface SEOAuditProps {
+  onNewAudit: () => void;
+}
+
+export default function SEOAudit({ onNewAudit }: SEOAuditProps) {
   const auditScore = 78;
 
   const categories = [
@@ -34,7 +38,7 @@ export default function SEOAudit() {
             <span className="dt dt-ai">AI</span>
             Last scan: 2h ago
           </span>
-          <button className="btn btn-prime !text-xs">
+          <button onClick={onNewAudit} className="btn btn-prime !text-xs">
             <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
               <path d="M8 2v12M2 8h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
