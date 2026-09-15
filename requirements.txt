@@ -1,0 +1,20 @@
+# Project Dependencies
+# This project uses Node.js and npm for dependency management
+# Install using: npm install
+
+# Production Dependencies
+react@^18.2.0
+react-dom@^18.2.0
+
+# Development Dependencies
+@types/react@^18.2.0
+@types/react-dom@^18.2.0
+@vitejs/plugin-react@^4.3.4
+typescript@^5.7.0
+vite@^6.3.5
+@tailwindcss/vite@^4.1.7
+tailwindcss@^4.1.7
+
+# Note: This is a Node.js/TypeScript project
+# For Python-style requirements, see package.json
+# Install all dependencies: npm install
