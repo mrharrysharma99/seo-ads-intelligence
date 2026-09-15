@@ -6,13 +6,11 @@ import Competitors from "./pages/Competitors";
 import Campaigns from "./pages/Campaigns";
 import Trends from "./pages/Trends";
 import Modal from "./components/Modal";
-import { AuditProvider, useAudit } from "./context/AuditContext";
 
 export type Page = "dashboard" | "seo" | "competitors" | "campaigns" | "trends";
 export type ModalType = "newAudit" | "export" | "newCampaign" | "creativeIdeas" | "campaignIdeas" | null;
 
-function AppContent() {
-  const { setTargetUrl, triggerAudit, targetUrl } = useAudit();
+export default function App() {
   const [page, setPage] = useState<Page>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [modal, setModal] = useState<ModalType>(null);
@@ -51,7 +49,6 @@ function AppContent() {
   };
 
   return (
-    <AuditProvider>
     <div className="flex min-h-screen relative z-[1]">
       <Sidebar
         page={page}
@@ -96,10 +93,7 @@ function AppContent() {
               </svg>
             </div>
             <button
-              onClick={() => {
-                setPage("seo");
-                triggerAudit();
-              }}
+              onClick={() => openModal("newAudit")}
               className="btn btn-soft !text-xs"
             >
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -125,12 +119,7 @@ function AppContent() {
           <div className="space-y-4">
             <div>
               <label className="lbl">Target URL</label>
-              <input 
-                className="input" 
-                defaultValue={targetUrl}
-                placeholder="Enter URL to audit" 
-                onChange={(e) => setTargetUrl(e.target.value)}
-              />
+              <input className="input" defaultValue="https://renthouse.co.in" placeholder="Enter URL to audit" />
             </div>
             <div>
               <label className="lbl">Audit Depth</label>
@@ -157,12 +146,7 @@ function AppContent() {
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={closeModal} className="btn btn-ghost">Cancel</button>
-              <button onClick={() => { 
-                closeModal(); 
-                setPage("seo");
-                triggerAudit();
-                showToast(`🔍 Audit started — scanning ${targetUrl}...`);
-              }} className="btn btn-prime">
+              <button onClick={() => { closeModal(); showToast("🔍 Audit started — scanning renthouse.co.in..."); }} className="btn btn-prime">
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
                   <path d="M8 2v12M2 8h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
@@ -559,14 +543,5 @@ function AppContent() {
         </div>
       )}
     </div>
-    </AuditProvider>
-  );
-}
-
-export default function App() {
-  return (
-    <AuditProvider>
-      <AppContent />
-    </AuditProvider>
   );
 }
