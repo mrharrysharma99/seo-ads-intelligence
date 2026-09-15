@@ -273,34 +273,10 @@ export default function Campaigns({ onExport, onNewCampaign, onCreativeIdeas, on
                 </div>
               )}
 
-              {activeTab === "keywords" && (
+              {(activeTab === "keywords" || activeTab === "demographics" || activeTab === "audience" || activeTab === "settings") && (
                 <div className="space-y-4 anim-in">
                   <div className="p-4 rounded-lg bg-panel2/30 border border-line/30">
-                    <p className="text-xs text-mut">Keyword data for {selectedCampaign.name}</p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "demographics" && (
-                <div className="space-y-4 anim-in">
-                  <div className="p-4 rounded-lg bg-panel2/30 border border-line/30">
-                    <p className="text-xs text-mut">Demographics data for {selectedCampaign.name}</p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "audience" && (
-                <div className="space-y-4 anim-in">
-                  <div className="p-4 rounded-lg bg-panel2/30 border border-line/30">
-                    <p className="text-xs text-mut">Audience data for {selectedCampaign.name}</p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "settings" && (
-                <div className="space-y-4 anim-in">
-                  <div className="p-4 rounded-lg bg-panel2/30 border border-line/30">
-                    <p className="text-xs text-mut">Settings for {selectedCampaign.name}</p>
+                    <p className="text-xs text-mut">{activeTab} data for {selectedCampaign.name}</p>
                   </div>
                 </div>
               )}

@@ -359,13 +359,13 @@ export default function Competitors() {
     },
   ]);
 
-  const sharedKeywords = [
-    { kw: "2bhk flat for rent", ourPos: 3, compPos: 2, comp: "MagicBricks" },
-    { kw: "pg accommodation near me", ourPos: 5, compPos: 1, comp: "NoBroker" },
-    { kw: "flat without brokerage", ourPos: 4, compPos: 3, comp: "Housing.com" },
-    { kw: "house for rent in bangalore", ourPos: 7, compPos: 4, comp: "99acres" },
-    { kw: "1bhk rent in hyderabad", ourPos: 5, compPos: 6, comp: "NoBroker" },
-  ];
+  const removeCompetitor = (domain: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (confirm(`Remove this competitor from tracking?`)) {
+      setCompetitors(competitors.filter(c => c.domain !== domain));
+      if (selectedCompetitor?.domain === domain) setSelectedCompetitor(null);
+    }
+  };
 
   const getCreativeDetails = (title: string, competitor: string) => {
     const details: Record<string, { description: string; imagePrompt: string; videoPrompt: string; adCopy: string }> = {
@@ -377,29 +377,29 @@ export default function Competitors() {
       },
       "Direct Owner Connect - Save ₹25K": {
         description: "Value-focused ad emphasizing direct owner connection and savings",
-        imagePrompt: "Split-screen comparison: Left side showing frustrated person with broker (red tint, crossed out), Right side showing happy person with property owner (green tint, checkmark), text 'SAVE ₹25,000' in large bold font, Indian urban setting, clean modern design",
-        videoPrompt: "20-second horizontal video: Story of a renter saving money - starts with broker fees being counted (₹25,000), transitions to direct owner meeting, happy handshake, text overlay 'DIRECT CONNECT = BIG SAVINGS', warm lighting, emotional storytelling style, end with app download CTA",
-        adCopy: "💰 Save ₹25,000 on Brokerage!\n\nConnect directly with property owners. No middlemen. No hidden fees.\n\n🔹 Verified owners only\n🔹 Instant responses\n🔹 Zero commission\n\nStart saving today! →"
+        imagePrompt: "Split-screen comparison: Left side frustrated person with broker (red tint), Right side happy person with owner (green tint), text 'SAVE ₹25,000' in bold, Indian urban setting",
+        videoPrompt: "20-second horizontal video: Story of renter saving money - broker fees counted (₹25,000), transitions to direct owner meeting, happy handshake, text 'DIRECT CONNECT = BIG SAVINGS'",
+        adCopy: "💰 Save ₹25,000 on Brokerage!\nConnect directly with property owners. No middlemen.\n🔹 Verified owners only\n🔹 Instant responses\nStart saving today! →"
       },
       "Verified Properties Only": {
-        description: "Trust-focused ad highlighting property verification and authenticity",
-        imagePrompt: "Shield/badge icon with checkmark in center, surrounded by property thumbnails, text '100% VERIFIED' in bold, trust badges and verification stamps, blue and green color scheme, professional and trustworthy design, clean white background",
-        videoPrompt: "12-second vertical video: Verification process animation - document scanning, property photos being checked, green checkmarks appearing one by one, text 'EVERY PROPERTY VERIFIED' with stamp animation, professional and trustworthy tone, end with 'Browse Verified Listings' CTA",
-        adCopy: "✅ 100% Verified Properties\n\nEvery listing personally verified by our team. No fake photos. No ghost properties.\n\n🔹 Real photos\n🔹 Real owners\n🔹 Real availability\n\nBrowse verified listings →"
+        description: "Trust-focused ad highlighting property verification",
+        imagePrompt: "Shield/badge icon with checkmark, surrounded by property thumbnails, text '100% VERIFIED' in bold, trust badges, blue and green color scheme, professional design",
+        videoPrompt: "12-second vertical video: Verification process animation - document scanning, property photos being checked, green checkmarks appearing, text 'EVERY PROPERTY VERIFIED'",
+        adCopy: "✅ 100% Verified Properties\nEvery listing personally verified. No fake photos.\n🔹 Real photos\n🔹 Real owners\nBrowse verified listings →"
       },
       "PG Stays Without Middlemen": {
         description: "PG accommodation ad targeting students and young professionals",
-        imagePrompt: "Cozy PG room interior with bed, study table, and window view, young professional studying, text 'PG STAYS - NO BROKERAGE' overlay, warm lighting, budget-friendly aesthetic, text 'Starting ₹5,000/mo', youthful and energetic vibe",
-        videoPrompt: "18-second vertical video: Day in the life of a PG resident - morning routine, studying, cooking in shared kitchen, friendly roommates, text overlays showing amenities (WiFi, Food, AC), price reveal '₹5,000/mo only', upbeat music, end with 'Find Your PG' CTA",
-        adCopy: "🎓 PG Stays Without Brokerage!\n\nPerfect for students & young professionals\n\n🔹 Starting ₹5,000/month\n🔹 WiFi + Food included\n🔹 Near IT parks & colleges\n🔹 Direct owner connect\n\nFind your perfect PG →"
+        imagePrompt: "Student studying in PG room, books and laptop, text 'PG STAYS - NO BROKERAGE', youthful energetic design, budget-friendly aesthetic",
+        videoPrompt: "18-second vertical video: Student life in PG - studying, cooking, friends, text 'Perfect PG for students', upbeat music",
+        adCopy: "🎓 PG Stays Without Brokerage\nPerfect for students & young professionals.\n🔹 Starting ₹4,000/month\n🔹 WiFi + Meals included\n🔹 Near colleges\nFind your PG →"
       },
     };
 
     return details[title] || {
       description: `Ad creative currently running by ${competitor}`,
-      imagePrompt: `Professional real estate advertisement for ${competitor}, modern apartment interior, clean design, text overlay with property details, Indian urban setting, 16:9 aspect ratio, vibrant colors, professional photography style`,
-      videoPrompt: `15-20 second real estate video ad for ${competitor}, property tour with smooth transitions, text animations highlighting key features, upbeat background music, professional quality, end with clear CTA, vertical format for social media`,
-      adCopy: `🏠 ${title}\n\nFind the perfect property with ${competitor}.\n\n✅ Verified listings\n✅ Direct owner connect\n✅ Zero brokerage\n\nBrowse now →`
+      imagePrompt: `Professional real estate advertisement for ${competitor}, modern apartment interior, clean design, text overlay with property details, Indian urban setting, 16:9 aspect ratio`,
+      videoPrompt: `15-20 second real estate video ad for ${competitor}, property tour with smooth transitions, text animations highlighting key features, upbeat music, vertical format`,
+      adCopy: `🏠 ${title}\nFind the perfect property with ${competitor}.\n✅ Verified listings\n✅ Direct owner connect\nBrowse now →`
     };
   };
 
@@ -410,11 +410,10 @@ export default function Competitors() {
     { id: "creatives", label: "Creatives" },
     { id: "demographics", label: "Demographics" },
     { id: "audience", label: "Audience" },
-  ] as const;
+  ];
 
   return (
     <div className="space-y-6 reveal-stagger">
-      {/* Header */}
       <div className="flex items-end justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-ink">Competitor Intelligence</h1>
@@ -428,54 +427,32 @@ export default function Competitors() {
         </button>
       </div>
 
-      {/* Competitor Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {competitors.map((comp) => (
-          <div
-            key={comp.domain}
-            className="panel p-4 hover:border-grn/40 transition-all cursor-pointer group"
-            onClick={() => {
-              setSelectedCompetitor(comp);
-              setActiveTab("overview");
-            }}
-          >
+          <div key={comp.domain} className="panel p-4 hover:border-grn/40 transition-all cursor-pointer group relative" onClick={() => { setSelectedCompetitor(comp); setActiveTab("overview"); }}>
+            <button onClick={(e) => removeCompetitor(comp.domain, e)} className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-ros/10 text-dim hover:text-ros" title="Remove competitor">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </button>
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h3 className="text-sm font-semibold text-ink group-hover:text-grn transition-colors">{comp.name}</h3>
                 <span className="url-tag !text-[10px]">{comp.domain}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (confirm(`Remove ${comp.name} from competitor tracking?`)) {
-                      setCompetitors(competitors.filter(c => c.domain !== comp.domain));
-                      if (selectedCompetitor?.domain === comp.domain) {
-                        setSelectedCompetitor(null);
-                      }
-                    }
-                  }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-ros/10 text-dim hover:text-ros"
-                  title="Remove competitor"
-                >
-                  <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                </button>
-                <div className={`flex items-center gap-1 text-xs font-semibold ${
-                  comp.trend === "up" ? "text-grn" : comp.trend === "down" ? "text-ros" : "text-amb"
-                }`}>
+              <div className={`flex items-center gap-1 text-xs font-semibold ${
+                comp.trend === "up" ? "text-grn" : comp.trend === "down" ? "text-ros" : "text-amb"
+              }`}>
                 <svg width="10" height="10" viewBox="0 0 16 16" fill="none">
                   {comp.trend === "up" ? (
                     <path d="M2 12l6-8 6 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                   ) : comp.trend === "down" ? (
                     <path d="M2 4l6 8 6-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                   ) : (
-                    <path d="M2 8h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
+                    <path d="M2 8h12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
                   )}
                 </svg>
                 {comp.trend}
-                </div>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-2 mb-3">
@@ -501,15 +478,12 @@ export default function Competitors() {
             </div>
             <div className="flex items-center justify-between pt-2 border-t border-line/50">
               <span className="text-[10px] text-dim">{comp.activeCampaigns} active campaigns</span>
-              <span className="text-[10px] text-grn font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                View Details →
-              </span>
+              <span className="text-[10px] text-grn font-semibold opacity-0 group-hover:opacity-100 transition-opacity">View Details →</span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Shared Keywords */}
       <div className="panel">
         <div className="panel-hd">
           <div>
@@ -533,15 +507,17 @@ export default function Competitors() {
               </tr>
             </thead>
             <tbody>
-              {sharedKeywords.map((kw, i) => (
+              {[
+                { kw: "2bhk flat for rent", ourPos: 3, compPos: 2, comp: "MagicBricks" },
+                { kw: "pg accommodation near me", ourPos: 5, compPos: 1, comp: "NoBroker" },
+                { kw: "flat without brokerage", ourPos: 4, compPos: 3, comp: "Housing.com" },
+                { kw: "house for rent in bangalore", ourPos: 7, compPos: 4, comp: "99acres" },
+                { kw: "1bhk rent in hyderabad", ourPos: 5, compPos: 6, comp: "NoBroker" },
+              ].map((kw, i) => (
                 <tr key={i}>
                   <td className="font-medium text-ink">{kw.kw}</td>
-                  <td>
-                    <span className="font-display font-bold text-grn">{kw.ourPos}</span>
-                  </td>
-                  <td>
-                    <span className="font-display font-bold text-ros">{kw.compPos}</span>
-                  </td>
+                  <td><span className="font-display font-bold text-grn">{kw.ourPos}</span></td>
+                  <td><span className="font-display font-bold text-ros">{kw.compPos}</span></td>
                   <td><span className="chip">{kw.comp}</span></td>
                   <td>
                     <span className={`text-xs font-semibold ${
@@ -559,137 +535,76 @@ export default function Competitors() {
 
       {/* Competitor Detail Drawer */}
       {selectedCompetitor && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 anim-in"
-            onClick={() => setSelectedCompetitor(null)}
-          />
-
-          {/* Drawer */}
-          <div className="fixed top-0 right-0 bottom-0 w-full max-w-4xl bg-bg1 border-l border-line z-50 overflow-y-auto anim-in shadow-2xl">
-            {/* Header */}
-            <div className="sticky top-0 bg-bg1/95 backdrop-blur-md border-b border-line px-6 py-4 z-10">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <div className="flex items-center gap-3 mb-1">
-                    <h2 className="font-display text-xl font-bold text-ink">{selectedCompetitor.name}</h2>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      selectedCompetitor.trend === "up" ? "bg-grn/10 text-grn border border-grn/30" :
-                      selectedCompetitor.trend === "down" ? "bg-ros/10 text-ros border border-ros/30" :
-                      "bg-amb/10 text-amb border border-amb/30"
-                    }`}>
-                      {selectedCompetitor.trend === "up" ? "↑ Growing" : selectedCompetitor.trend === "down" ? "↓ Declining" : "→ Stable"}
-                    </span>
-                  </div>
-                  <span className="url-tag">{selectedCompetitor.domain}</span>
-                </div>
-                <button
-                  onClick={() => setSelectedCompetitor(null)}
-                  className="btn btn-ghost !p-2"
-                  aria-label="Close"
-                >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                  </svg>
-                </button>
+        <div className="fixed inset-0 z-50 flex justify-end" onClick={() => setSelectedCompetitor(null)}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"/>
+          <div className="relative w-full max-w-3xl bg-bg1 border-l border-line overflow-y-auto anim-in" onClick={(e) => e.stopPropagation()}>
+            <div className="sticky top-0 bg-bg1/95 backdrop-blur-md border-b border-line px-6 py-4 flex items-center justify-between z-10">
+              <div>
+                <h2 className="font-display text-lg font-bold text-ink">{selectedCompetitor.name}</h2>
+                <span className="url-tag !text-[10px]">{selectedCompetitor.domain}</span>
               </div>
+              <button onClick={() => setSelectedCompetitor(null)} className="p-2 rounded-lg hover:bg-panel3 transition-colors text-dim hover:text-ink">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </button>
+            </div>
 
-              {/* Tabs */}
-              <div className="flex gap-1 border-b border-line -mb-4">
+            <div className="px-6 py-4 border-b border-line">
+              <div className="flex gap-2 overflow-x-auto">
                 {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`px-4 py-2 text-xs font-semibold border-b-2 transition-colors ${
-                      activeTab === tab.id
-                        ? "border-grn text-grn"
-                        : "border-transparent text-dim hover:text-ink"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
+                  <button key={tab.id} onClick={() => setActiveTab(tab.id as any)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${activeTab === tab.id ? "bg-grn/10 text-grn border border-grn/30" : "text-mut hover:text-ink hover:bg-panel2"}`}>{tab.label}</button>
                 ))}
               </div>
             </div>
 
-            {/* Content */}
-            <div className="p-6 space-y-6">
+            <div className="p-6">
               {activeTab === "overview" && (
-                <div className="space-y-6 anim-in">
-                  {/* Key Metrics */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="panel p-4">
-                      <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Domain Rating</span>
-                      <p className="font-display text-2xl font-bold text-ink mt-1">{selectedCompetitor.dr}</p>
+                <div className="space-y-5 anim-in">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                      <span className="text-[9px] text-dim uppercase tracking-wider font-semibold">Domain Rating</span>
+                      <p className="font-display text-lg font-bold text-ink mt-0.5">{selectedCompetitor.dr}</p>
                     </div>
-                    <div className="panel p-4">
-                      <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Active Campaigns</span>
-                      <p className="font-display text-2xl font-bold text-ink mt-1">{selectedCompetitor.activeCampaigns}</p>
+                    <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                      <span className="text-[9px] text-dim uppercase tracking-wider font-semibold">Active Campaigns</span>
+                      <p className="font-display text-lg font-bold text-ink mt-0.5">{selectedCompetitor.activeCampaigns}</p>
                     </div>
-                    <div className="panel p-4">
-                      <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Est. Monthly Spend</span>
-                      <p className="font-display text-2xl font-bold text-ink mt-1">{selectedCompetitor.estMonthlySpend}</p>
+                    <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                      <span className="text-[9px] text-dim uppercase tracking-wider font-semibold">Est. Monthly Spend</span>
+                      <p className="font-display text-lg font-bold text-grn mt-0.5">{selectedCompetitor.estMonthlySpend}</p>
                     </div>
-                    <div className="panel p-4">
-                      <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Keyword Overlap</span>
-                      <p className="font-display text-2xl font-bold text-sky mt-1">{selectedCompetitor.overlap}%</p>
-                    </div>
-                  </div>
-
-                  {/* Ad Spend Trend */}
-                  <div className="panel">
-                    <div className="panel-hd">
-                      <h3 className="text-sm font-semibold text-ink">Ad Spend Trend (Last 5 Months)</h3>
-                      <span className="chip">
-                        <span className="dt dt-est">EST</span>
-                        Estimated
-                      </span>
-                    </div>
-                    <div className="panel-bd">
-                      <div className="h-32 flex items-end gap-2">
-                        {selectedCompetitor.adSpendTrend.map((item, i) => (
-                          <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                            <span className="text-[10px] font-mono text-mut">₹{item.spend}L</span>
-                            <div
-                              className="w-full bg-grn/20 rounded-t"
-                              style={{ height: `${(item.spend / Math.max(...selectedCompetitor.adSpendTrend.map(d => d.spend))) * 100}%` }}
-                            />
-                            <span className="text-[10px] text-dim">{item.month}</span>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                      <span className="text-[9px] text-dim uppercase tracking-wider font-semibold">Keyword Overlap</span>
+                      <p className="font-display text-lg font-bold text-sky mt-0.5">{selectedCompetitor.overlap}%</p>
                     </div>
                   </div>
 
-                  {/* Quick Stats */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="panel p-4">
-                      <h4 className="text-xs font-semibold text-ink mb-3">Top Keywords</h4>
-                      <div className="space-y-2">
-                        {selectedCompetitor.topKeywords.slice(0, 3).map((kw, i) => (
-                          <div key={i} className="flex items-center justify-between">
-                            <span className="text-[11px] text-mut truncate">{kw.kw}</span>
-                            <span className="text-[10px] font-mono font-bold text-ink">Pos {kw.pos}</span>
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink mb-3 uppercase tracking-wider">Ad Spend Trend (Last 5 Months)</h4>
+                    <div className="h-32 flex items-end gap-2">
+                      {selectedCompetitor.adSpendTrend.map((d, i) => (
+                        <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                          <div className="w-full bg-sky/20 rounded-t relative" style={{ height: `${(d.spend / Math.max(...selectedCompetitor.adSpendTrend.map(x => x.spend))) * 100}%` }}>
+                            <div className="absolute inset-0 bg-gradient-to-t from-sky/40 to-sky/10 rounded-t"/>
                           </div>
-                        ))}
-                      </div>
+                          <span className="text-[9px] text-dim">{d.month}</span>
+                          <span className="text-[9px] text-mut font-mono">₹{d.spend}L</span>
+                        </div>
+                      ))}
                     </div>
-                    <div className="panel p-4">
-                      <h4 className="text-xs font-semibold text-ink mb-3">Audience Demographics</h4>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[11px] text-mut">Mobile Users</span>
-                          <span className="text-[10px] font-mono font-bold text-ink">{selectedCompetitor.demographics.devices.mobile}%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-[11px] text-mut">25-34 Age Group</span>
-                          <span className="text-[10px] font-mono font-bold text-ink">{selectedCompetitor.demographics.age.find(a => a.range === "25-34")?.pct}%</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-[11px] text-mut">Top City</span>
-                          <span className="text-[10px] font-mono font-bold text-ink">{selectedCompetitor.demographics.locations[0].city}</span>
-                        </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink mb-3 uppercase tracking-wider">Quick Stats</h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-lg bg-panel2/40 border border-line/40">
+                        <span className="text-[10px] text-dim">Top Keyword</span>
+                        <p className="text-xs text-ink font-medium mt-1">{selectedCompetitor.topKeywords[0]?.kw}</p>
+                      </div>
+                      <div className="p-3 rounded-lg bg-panel2/40 border border-line/40">
+                        <span className="text-[10px] text-dim">Primary Demographic</span>
+                        <p className="text-xs text-ink font-medium mt-1">{selectedCompetitor.demographics.age.reduce((a, b) => a.pct > b.pct ? a : b).range} years</p>
                       </div>
                     </div>
                   </div>
@@ -698,65 +613,48 @@ export default function Competitors() {
 
               {activeTab === "campaigns" && (
                 <div className="space-y-4 anim-in">
-                  <div className="panel p-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-sm font-semibold text-ink">Active Campaigns Overview</h3>
-                      <span className="chip">
-                        <span className="dt dt-est">EST</span>
-                        Intelligence Data
-                      </span>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                      <span className="text-[9px] text-dim uppercase tracking-wider font-semibold">Active Campaigns</span>
+                      <p className="font-display text-lg font-bold text-ink mt-0.5">{selectedCompetitor.activeCampaigns}</p>
                     </div>
-                    <div className="grid grid-cols-3 gap-4 mb-4">
-                      <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
-                        <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Total Active</span>
-                        <p className="font-display text-xl font-bold text-ink mt-1">{selectedCompetitor.activeCampaigns}</p>
-                      </div>
-                      <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
-                        <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Est. Monthly Budget</span>
-                        <p className="font-display text-xl font-bold text-ink mt-1">{selectedCompetitor.estMonthlySpend}</p>
-                      </div>
-                      <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
-                        <span className="text-[10px] text-dim uppercase tracking-wider font-semibold">Avg. CPC</span>
-                        <p className="font-display text-xl font-bold text-ink mt-1">₹{Math.floor(Math.random() * 15) + 12}</p>
-                      </div>
+                    <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                      <span className="text-[9px] text-dim uppercase tracking-wider font-semibold">Est. Monthly Budget</span>
+                      <p className="font-display text-lg font-bold text-grn mt-0.5">{selectedCompetitor.estMonthlySpend}</p>
                     </div>
+                    <div className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                      <span className="text-[9px] text-dim uppercase tracking-wider font-semibold">Avg. CPC</span>
+                      <p className="font-display text-lg font-bold text-ink mt-0.5">₹{(Math.random() * 15 + 10).toFixed(1)}</p>
+                    </div>
+                  </div>
 
-                    <h4 className="text-xs font-semibold text-ink mb-3">Campaign Types Detected</h4>
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink mb-3 uppercase tracking-wider">Campaign Types</h4>
                     <div className="space-y-2">
-                      {[
-                        { type: "Search Ads", count: Math.floor(selectedCompetitor.activeCampaigns * 0.6), pct: 60 },
-                        { type: "Display Ads", count: Math.floor(selectedCompetitor.activeCampaigns * 0.25), pct: 25 },
-                        { type: "Shopping Ads", count: Math.floor(selectedCompetitor.activeCampaigns * 0.1), pct: 10 },
-                        { type: "Video Ads", count: Math.floor(selectedCompetitor.activeCampaigns * 0.05), pct: 5 },
-                      ].map((item, i) => (
+                      {[{ type: "Search Ads", pct: 45 }, { type: "Display Ads", pct: 30 }, { type: "Shopping Ads", pct: 15 }, { type: "Video Ads", pct: 10 }].map((ct, i) => (
                         <div key={i} className="flex items-center gap-3">
-                          <div className="w-24 text-xs text-mut">{item.type}</div>
+                          <div className="w-24 text-xs text-mut">{ct.type}</div>
                           <div className="flex-1 h-2 rounded-full bg-panel2 overflow-hidden">
-                            <div className="h-full rounded-full bg-sky" style={{ width: `${item.pct}%` }}/>
+                            <div className="h-full rounded-full bg-vio" style={{ width: `${ct.pct}%` }}/>
                           </div>
-                          <span className="w-16 text-right text-xs font-mono text-ink">{item.count} campaigns</span>
+                          <span className="text-xs font-mono font-bold text-ink w-10 text-right">{ct.pct}%</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="panel p-4">
-                    <h4 className="text-xs font-semibold text-ink mb-3">Campaign Focus Areas</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      {[
-                        { area: "Property Rentals", focus: "High" },
-                        { area: "PG/Hostel Stays", focus: selectedCompetitor.name === "Zolo Stays" ? "Very High" : "Medium" },
-                        { area: "Premium Segment", focus: selectedCompetitor.name === "Housing.com" ? "High" : "Low" },
-                        { area: "Student Housing", focus: selectedCompetitor.name === "Zolo Stays" ? "Very High" : "Low" },
-                      ].map((item, i) => (
-                        <div key={i} className="p-3 rounded-lg bg-panel2/50 border border-line/50">
+                  <div>
+                    <h4 className="text-xs font-semibold text-ink mb-3 uppercase tracking-wider">Campaign Focus Areas</h4>
+                    <div className="space-y-2">
+                      {selectedCompetitor.topKeywords.slice(0, 4).map((kw, i) => (
+                        <div key={i} className="p-3 rounded-lg bg-panel2/40 border border-line/40">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs font-medium text-ink">{item.area}</span>
-                            <span className={`text-[10px] font-bold ${
-                              item.focus === "Very High" ? "text-grn" : item.focus === "High" ? "text-sky" : "text-dim"
-                            }`}>
-                              {item.focus}
-                            </span>
+                            <span className="text-xs font-medium text-ink">{kw.kw}</span>
+                            <span className="text-[10px] text-grn font-semibold">Position {kw.pos}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[9px] text-dim">Volume: {kw.vol}</span>
+                            <span className={`text-[9px] font-bold ${kw.trend === "up" ? "text-grn" : kw.trend === "down" ? "text-ros" : "text-amb"}`}>{kw.trend}</span>
                           </div>
                         </div>
                       ))}
@@ -767,54 +665,41 @@ export default function Competitors() {
 
               {activeTab === "keywords" && (
                 <div className="space-y-4 anim-in">
-                  <div className="panel">
-                    <div className="panel-hd">
-                      <div>
-                        <h3 className="text-sm font-semibold text-ink">Top Keywords</h3>
-                        <p className="text-xs text-dim mt-0.5">Keywords driving traffic to {selectedCompetitor.name}</p>
-                      </div>
-                      <span className="chip">
-                        <span className="dt dt-est">EST</span>
-                        {selectedCompetitor.topKeywords.length} keywords
-                      </span>
-                    </div>
-                    <div className="panel-bd">
-                      <table className="tbl">
-                        <thead>
-                          <tr>
-                            <th>Keyword</th>
-                            <th>Position</th>
-                            <th>Volume</th>
-                            <th>Trend</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {selectedCompetitor.topKeywords.map((kw, i) => (
-                            <tr key={i}>
-                              <td className="font-medium text-ink text-xs">{kw.kw}</td>
-                              <td>
-                                <span className="font-display font-bold text-ink">{kw.pos}</span>
-                              </td>
-                              <td className="mono text-xs text-mut">{kw.vol}</td>
-                              <td>
-                                <span className={`text-[10px] font-bold uppercase ${
-                                  kw.trend === "up" ? "text-grn" : kw.trend === "down" ? "text-ros" : "text-amb"
-                                }`}>
-                                  {kw.trend === "up" ? "↑" : kw.trend === "down" ? "↓" : "→"} {kw.trend}
-                                </span>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-semibold text-ink uppercase tracking-wider">Top Keywords ({selectedCompetitor.topKeywords.length})</h4>
+                    <span className="chip !text-[9px]">{selectedCompetitor.keywords.toLocaleString()} total</span>
                   </div>
+                  <table className="tbl">
+                    <thead>
+                      <tr>
+                        <th>Keyword</th>
+                        <th>Position</th>
+                        <th>Volume</th>
+                        <th>Trend</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedCompetitor.topKeywords.map((kw, i) => (
+                        <tr key={i}>
+                          <td className="text-xs font-medium text-ink">{kw.kw}</td>
+                          <td><span className="font-display font-bold text-ink">{kw.pos}</span></td>
+                          <td className="mono text-xs text-mut">{kw.vol}</td>
+                          <td>
+                            <span className={`text-[10px] font-bold uppercase ${
+                              kw.trend === "up" ? "text-grn" : kw.trend === "down" ? "text-ros" : "text-amb"
+                            }`}>
+                              {kw.trend === "up" ? "↑" : kw.trend === "down" ? "↓" : "→"} {kw.trend}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
 
               {activeTab === "creatives" && (
                 <div className="space-y-4 anim-in">
-                  {/* Info Banner */}
                   <div className="flex items-center gap-2 p-3 rounded-lg bg-amb/5 border border-amb/20">
                     <span className="dt dt-ai">AI</span>
                     <span className="text-xs text-mut">Actual creatives detected from competitor ads. Use the AI prompts below to generate similar visuals.</span>
@@ -866,14 +751,12 @@ export default function Competitors() {
                               <span className="text-[10px] font-mono font-bold text-ink">{ad.score}/100</span>
                             </div>
 
-                            {/* AI Prompts Section */}
                             <div className="pt-3 border-t border-line/40 space-y-2">
                               <div className="flex items-center gap-2">
                                 <span className="text-[10px] font-bold text-amb uppercase tracking-wider">🎨 AI Prompts</span>
                                 <span className="text-[9px] text-dim">Copy & use with AI image/video generators</span>
                               </div>
                               
-                              {/* Image Prompt */}
                               <div className="p-2.5 rounded-lg bg-bg1/60 border border-line/40 group/prompt">
                                 <div className="flex items-center justify-between mb-1.5">
                                   <span className="text-[9px] font-semibold text-sky uppercase tracking-wider">Image Generation Prompt</span>
@@ -890,7 +773,6 @@ export default function Competitors() {
                                 <p className="text-[10.5px] text-mut leading-relaxed font-mono">{creativeDetails.imagePrompt}</p>
                               </div>
 
-                              {/* Video Prompt */}
                               <div className="p-2.5 rounded-lg bg-bg1/60 border border-line/40 group/prompt">
                                 <div className="flex items-center justify-between mb-1.5">
                                   <span className="text-[9px] font-semibold text-vio uppercase tracking-wider">Video Generation Prompt</span>
@@ -907,7 +789,6 @@ export default function Competitors() {
                                 <p className="text-[10.5px] text-mut leading-relaxed font-mono">{creativeDetails.videoPrompt}</p>
                               </div>
 
-                              {/* Ad Copy */}
                               <div className="p-2.5 rounded-lg bg-bg1/60 border border-line/40 group/prompt">
                                 <div className="flex items-center justify-between mb-1.5">
                                   <span className="text-[9px] font-semibold text-grn uppercase tracking-wider">Ad Copy Template</span>
@@ -934,7 +815,6 @@ export default function Competitors() {
 
               {activeTab === "demographics" && (
                 <div className="space-y-4 anim-in">
-                  {/* Age Distribution */}
                   <div className="panel p-4">
                     <h4 className="text-xs font-semibold text-ink mb-3">Age Distribution</h4>
                     <div className="space-y-2">
@@ -950,7 +830,6 @@ export default function Competitors() {
                     </div>
                   </div>
 
-                  {/* Gender Split */}
                   <div className="panel p-4">
                     <h4 className="text-xs font-semibold text-ink mb-3">Gender Split</h4>
                     <div className="grid grid-cols-2 gap-3">
@@ -965,7 +844,6 @@ export default function Competitors() {
                     </div>
                   </div>
 
-                  {/* Device Breakdown */}
                   <div className="panel p-4">
                     <h4 className="text-xs font-semibold text-ink mb-3">Device Breakdown</h4>
                     <div className="space-y-2">
@@ -985,7 +863,6 @@ export default function Competitors() {
                     </div>
                   </div>
 
-                  {/* Top Locations */}
                   <div className="panel p-4">
                     <h4 className="text-xs font-semibold text-ink mb-3">Top Locations</h4>
                     <div className="space-y-2">
@@ -1038,7 +915,7 @@ export default function Competitors() {
               )}
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
