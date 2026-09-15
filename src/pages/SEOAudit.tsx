@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAudit } from "../context/AuditContext";
 
 interface SEOAuditProps {
   onNewAudit: () => void;
 }
 
 export default function SEOAudit({ onNewAudit }: SEOAuditProps) {
-  const [targetUrl, setTargetUrl] = useState("https://renthouse.co.in");
-  const [isAuditing, setIsAuditing] = useState(false);
+  const { targetUrl, setTargetUrl, isAuditing, setIsAuditing, auditScore, setAuditScore, triggerAudit } = useAudit();
   const [auditComplete, setAuditComplete] = useState(true);
-  const [auditScore, setAuditScore] = useState(78);
 
   const [categories, setCategories] = useState([
     { name: "Technical SEO", score: 85, issues: 4, max: 100 },
@@ -30,54 +29,48 @@ export default function SEOAudit({ onNewAudit }: SEOAuditProps) {
     { sev: "low", title: "Alt text missing on 15 listing images", category: "On-Page SEO", page: "/gallery" },
   ]);
 
+  useEffect(() => {
+    if (isAuditing) {
+      setAuditComplete(false);
+      const timer = setTimeout(() => {
+        // Generate random scores based on URL
+        const urlHash = targetUrl.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const baseScore = 60 + (urlHash % 30);
+        
+        setAuditScore(baseScore);
+        setCategories([
+          { name: "Technical SEO", score: baseScore + Math.floor(Math.random() * 15), issues: Math.floor(Math.random() * 10) + 2, max: 100 },
+          { name: "On-Page SEO", score: baseScore - 5 + Math.floor(Math.random() * 10), issues: Math.floor(Math.random() * 12) + 5, max: 100 },
+          { name: "Content Quality", score: baseScore - 10 + Math.floor(Math.random() * 15), issues: Math.floor(Math.random() * 15) + 8, max: 100 },
+          { name: "Mobile UX", score: baseScore + 10 + Math.floor(Math.random() * 10), issues: Math.floor(Math.random() * 5) + 1, max: 100 },
+          { name: "Page Speed", score: baseScore - 3 + Math.floor(Math.random() * 12), issues: Math.floor(Math.random() * 8) + 3, max: 100 },
+          { name: "Backlinks", score: baseScore - 15 + Math.floor(Math.random() * 20), issues: Math.floor(Math.random() * 12) + 5, max: 100 },
+        ]);
+
+        setFindings([
+          { sev: "critical", title: "Core Web Vitals: LCP exceeds 4.0s on multiple pages", category: "Page Speed", page: "/" },
+          { sev: "critical", title: "Broken internal links detected", category: "Technical SEO", page: "/about" },
+          { sev: "high", title: "Missing H1 tags on key landing pages", category: "On-Page SEO", page: "/services" },
+          { sev: "high", title: "Thin content detected on several pages", category: "Content Quality", page: "/blog" },
+          { sev: "medium", title: "Duplicate meta descriptions found", category: "On-Page SEO", page: "/products" },
+          { sev: "medium", title: "Images missing lazy loading attribute", category: "Page Speed", page: "/gallery" },
+          { sev: "low", title: "Schema markup incomplete", category: "Technical SEO", page: "/" },
+          { sev: "low", title: "Alt text missing on several images", category: "On-Page SEO", page: "/images" },
+        ]);
+
+        setIsAuditing(false);
+        setAuditComplete(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuditing, targetUrl, setAuditScore, setIsAuditing]);
+
   const runAudit = () => {
     if (!targetUrl.trim()) {
       alert("Please enter a valid URL");
       return;
     }
-
-    setIsAuditing(true);
-    setAuditComplete(false);
-
-    // Simulate audit process
-    setTimeout(() => {
-      // Generate random scores based on URL
-      const urlHash = targetUrl.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      const baseScore = 60 + (urlHash % 30);
-      
-      setAuditScore(baseScore);
-      setCategories([
-        { name: "Technical SEO", score: baseScore + Math.floor(Math.random() * 15), issues: Math.floor(Math.random() * 10) + 2, max: 100 },
-        { name: "On-Page SEO", score: baseScore - 5 + Math.floor(Math.random() * 10), issues: Math.floor(Math.random() * 12) + 5, max: 100 },
-        { name: "Content Quality", score: baseScore - 10 + Math.floor(Math.random() * 15), issues: Math.floor(Math.random() * 15) + 8, max: 100 },
-        { name: "Mobile UX", score: baseScore + 10 + Math.floor(Math.random() * 10), issues: Math.floor(Math.random() * 5) + 1, max: 100 },
-        { name: "Page Speed", score: baseScore - 3 + Math.floor(Math.random() * 12), issues: Math.floor(Math.random() * 8) + 3, max: 100 },
-        { name: "Backlinks", score: baseScore - 15 + Math.floor(Math.random() * 20), issues: Math.floor(Math.random() * 12) + 5, max: 100 },
-      ]);
-
-      // Extract domain for findings
-      let domain = targetUrl;
-      try {
-        const url = new URL(targetUrl);
-        domain = url.hostname;
-      } catch (e) {
-        // Use as-is if not a valid URL
-      }
-
-      setFindings([
-        { sev: "critical", title: "Core Web Vitals: LCP exceeds 4.0s on multiple pages", category: "Page Speed", page: "/" },
-        { sev: "critical", title: "Broken internal links detected", category: "Technical SEO", page: "/about" },
-        { sev: "high", title: "Missing H1 tags on key landing pages", category: "On-Page SEO", page: "/services" },
-        { sev: "high", title: "Thin content detected on several pages", category: "Content Quality", page: "/blog" },
-        { sev: "medium", title: "Duplicate meta descriptions found", category: "On-Page SEO", page: "/products" },
-        { sev: "medium", title: "Images missing lazy loading attribute", category: "Page Speed", page: "/gallery" },
-        { sev: "low", title: "Schema markup incomplete", category: "Technical SEO", page: "/" },
-        { sev: "low", title: "Alt text missing on several images", category: "On-Page SEO", page: "/images" },
-      ]);
-
-      setIsAuditing(false);
-      setAuditComplete(true);
-    }, 2000);
+    triggerAudit();
   };
 
   return (

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAudit } from "../context/AuditContext";
 
 interface CampaignsProps {
   onExport: () => void;
@@ -8,83 +9,45 @@ interface CampaignsProps {
 }
 
 export default function Campaigns({ onExport, onNewCampaign, onCreativeIdeas, onCampaignIdeas }: CampaignsProps) {
+  const { websiteType, targetUrl } = useAudit();
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<"overview" | "keywords" | "demographics" | "audience" | "settings">("overview");
+  const [campaigns, setCampaigns] = useState<any[]>([]);
 
-  const campaigns = [
-    {
-      name: "Bangalore 2BHK Push",
-      competitor: "MagicBricks",
-      platform: "Google Ads",
-      status: "active",
-      spend: "₹82,400",
-      impressions: "145K",
-      clicks: "8.2K",
-      ctr: "5.7%",
-      conversions: 342,
-      costPerConv: "₹241",
-    },
-    {
-      name: "PG Listings - Hyderabad",
-      competitor: "NoBroker",
-      platform: "Meta Ads",
-      status: "active",
-      spend: "₹45,200",
-      impressions: "98K",
-      clicks: "4.1K",
-      ctr: "4.2%",
-      conversions: 187,
-      costPerConv: "₹242",
-    },
-    {
-      name: "No Brokerage Campaign",
-      competitor: "Housing.com",
-      platform: "Google Ads",
-      status: "active",
-      spend: "₹63,800",
-      impressions: "112K",
-      clicks: "6.8K",
-      ctr: "6.1%",
-      conversions: 298,
-      costPerConv: "₹214",
-    },
-    {
-      name: "Pune Rental Season",
-      competitor: "99acres",
-      platform: "Google Ads",
-      status: "paused",
-      spend: "₹31,500",
-      impressions: "67K",
-      clicks: "3.2K",
-      ctr: "4.8%",
-      conversions: 124,
-      costPerConv: "₹254",
-    },
-    {
-      name: "Chennai Premium Flats",
-      competitor: "MagicBricks",
-      platform: "Meta Ads",
-      status: "active",
-      spend: "₹28,900",
-      impressions: "54K",
-      clicks: "2.4K",
-      ctr: "4.4%",
-      conversions: 98,
-      costPerConv: "₹295",
-    },
-    {
-      name: "Mumbai Diwali Special",
-      competitor: "Zolo Stays",
-      platform: "Google Ads",
-      status: "ended",
-      spend: "₹95,000",
-      impressions: "189K",
-      clicks: "11.2K",
-      ctr: "5.9%",
-      conversions: 445,
-      costPerConv: "₹213",
-    },
-  ];
+  useEffect(() => {
+    const generateCampaigns = () => {
+      const urlHash = targetUrl.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const baseMultiplier = 0.7 + (urlHash % 60) / 100;
+
+      const campaignData: Record<string, any[]> = {
+        'real-estate': [
+          { name: "Bangalore 2BHK Push", competitor: "MagicBricks", platform: "Google Ads", status: "active", spend: `₹${Math.floor(82400 * baseMultiplier).toLocaleString()}`, impressions: "145K", clicks: "8.2K", ctr: "5.7%", conversions: Math.floor(342 * baseMultiplier), costPerConv: "₹241" },
+          { name: "PG Listings - Hyderabad", competitor: "NoBroker", platform: "Meta Ads", status: "active", spend: `₹${Math.floor(45200 * baseMultiplier).toLocaleString()}`, impressions: "98K", clicks: "4.1K", ctr: "4.2%", conversions: Math.floor(187 * baseMultiplier), costPerConv: "₹242" },
+          { name: "No Brokerage Campaign", competitor: "Housing.com", platform: "Google Ads", status: "active", spend: `₹${Math.floor(63800 * baseMultiplier).toLocaleString()}`, impressions: "112K", clicks: "6.8K", ctr: "6.1%", conversions: Math.floor(298 * baseMultiplier), costPerConv: "₹214" },
+        ],
+        'technology': [
+          { name: "Enterprise Solutions", competitor: "TCS", platform: "Google Ads", status: "active", spend: `₹${Math.floor(95000 * baseMultiplier).toLocaleString()}`, impressions: "125K", clicks: "6.5K", ctr: "5.2%", conversions: Math.floor(285 * baseMultiplier), costPerConv: "₹333" },
+          { name: "Digital Transformation", competitor: "Infosys", platform: "LinkedIn Ads", status: "active", spend: `₹${Math.floor(78000 * baseMultiplier).toLocaleString()}`, impressions: "98K", clicks: "4.8K", ctr: "4.9%", conversions: Math.floor(198 * baseMultiplier), costPerConv: "₹394" },
+        ],
+        'ecommerce': [
+          { name: "Big Sale Campaign", competitor: "Flipkart", platform: "Google Ads", status: "active", spend: `₹${Math.floor(125000 * baseMultiplier).toLocaleString()}`, impressions: "285K", clicks: "18.5K", ctr: "6.5%", conversions: Math.floor(520 * baseMultiplier), costPerConv: "₹240" },
+          { name: "Prime Delivery", competitor: "Amazon", platform: "Meta Ads", status: "active", spend: `₹${Math.floor(98000 * baseMultiplier).toLocaleString()}`, impressions: "195K", clicks: "12.8K", ctr: "6.6%", conversions: Math.floor(445 * baseMultiplier), costPerConv: "₹220" },
+        ],
+        'food': [
+          { name: "Quick Delivery", competitor: "Zomato", platform: "Meta Ads", status: "active", spend: `₹${Math.floor(68000 * baseMultiplier).toLocaleString()}`, impressions: "165K", clicks: "11.2K", ctr: "6.8%", conversions: Math.floor(385 * baseMultiplier), costPerConv: "₹177" },
+          { name: "Instamart Push", competitor: "Swiggy", platform: "Google Ads", status: "active", spend: `₹${Math.floor(58000 * baseMultiplier).toLocaleString()}`, impressions: "142K", clicks: "9.5K", ctr: "6.7%", conversions: Math.floor(325 * baseMultiplier), costPerConv: "₹178" },
+        ],
+        'general': [
+          { name: "Brand Awareness", competitor: "Competitor A", platform: "Google Ads", status: "active", spend: `₹${Math.floor(72000 * baseMultiplier).toLocaleString()}`, impressions: "125K", clicks: "7.5K", ctr: "6.0%", conversions: Math.floor(265 * baseMultiplier), costPerConv: "₹272" },
+          { name: "Lead Generation", competitor: "Competitor B", platform: "LinkedIn Ads", status: "active", spend: `₹${Math.floor(58000 * baseMultiplier).toLocaleString()}`, impressions: "98K", clicks: "5.2K", ctr: "5.3%", conversions: Math.floor(198 * baseMultiplier), costPerConv: "₹293" },
+        ],
+      };
+
+      return campaignData[websiteType] || campaignData['general'];
+    };
+
+    setCampaigns(generateCampaigns());
+  }, [websiteType, targetUrl]);
 
   return (
     <div className="space-y-6 reveal-stagger">
