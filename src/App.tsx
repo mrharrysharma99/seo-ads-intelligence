@@ -280,7 +280,6 @@ export default function App() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Creative Idea Cards */}
               {[
                 {
                   title: "Urgency + Location Hook",

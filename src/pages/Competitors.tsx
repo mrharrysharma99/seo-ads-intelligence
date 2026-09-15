@@ -393,30 +393,6 @@ export default function Competitors() {
         videoPrompt: "18-second vertical video: Day in the life of a PG resident - morning routine, studying, cooking in shared kitchen, friendly roommates, text overlays showing amenities (WiFi, Food, AC), price reveal '₹5,000/mo only', upbeat music, end with 'Find Your PG' CTA",
         adCopy: "🎓 PG Stays Without Brokerage!\n\nPerfect for students & young professionals\n\n🔹 Starting ₹5,000/month\n🔹 WiFi + Food included\n🔹 Near IT parks & colleges\n🔹 Direct owner connect\n\nFind your perfect PG →"
       },
-      "Premium Flats in Top Localities": {
-        description: "Luxury-focused ad targeting premium segment renters",
-        imagePrompt: "Luxury apartment interior with high-end furnishings, floor-to-ceiling windows with city view, modern kitchen, text 'PREMIUM FLATS' in elegant gold font, location pins for top localities, sophisticated and upscale design, dark elegant background",
-        videoPrompt: "25-second cinematic video: Luxury apartment tour - grand entrance, spacious living room, modern kitchen, master bedroom with city view, amenities showcase (pool, gym, clubhouse), text overlays with locality names, elegant background music, end with 'Schedule Premium Visit' CTA",
-        adCopy: "✨ Premium Flats in Top Localities\n\nExperience luxury living in Bangalore's finest neighborhoods.\n\n🔹 Indiranagar | Koramangala | Whitefield\n🔹 Starting ₹25,000/month\n🔹 Fully furnished options\n🔹 Premium amenities\n\nSchedule your visit →"
-      },
-      "Verified Listings - 100% Genuine": {
-        description: "Trust and authenticity focused ad with strong verification messaging",
-        imagePrompt: "Large verification badge with '100% GENUINE' text, multiple property cards with green checkmarks, trust indicators and security icons, clean professional design, blue and white color scheme, emphasis on reliability and authenticity",
-        videoPrompt: "15-second video: Verification process showcase - document verification animation, property photo validation, owner ID check, green checkmarks appearing, text '100% GENUINE LISTINGS' with stamp effect, professional and trustworthy tone, end with 'Browse with Confidence' CTA",
-        adCopy: "🛡️ Verified Listings - 100% Genuine\n\nEvery property verified. Every photo real. Every owner authenticated.\n\n🔹 3-step verification process\n🔹 Real-time availability\n🔹 Genuine owner details\n\nBrowse with confidence →"
-      },
-      "Find Your Dream Home Today": {
-        description: "Emotional appeal ad focusing on finding the perfect home",
-        imagePrompt: "Happy family/couple in front of their new home, warm golden hour lighting, text 'FIND YOUR DREAM HOME' in friendly font, heart icon, welcoming and emotional design, soft warm colors, Indian family in modern apartment setting",
-        videoPrompt: "20-second emotional video: Journey of finding a home - scrolling through listings, visiting properties, finally finding 'the one', happy moment of moving in, text 'Your Dream Home Awaits', warm emotional music, end with 'Start Your Search' CTA",
-        adCopy: "🏡 Find Your Dream Home Today!\n\nYour perfect home is just a search away.\n\n🔹 10,000+ active listings\n🔹 All budgets & locations\n🔹 Instant owner connect\n🔹 Zero brokerage\n\nStart your home search →"
-      },
-      "Luxury Apartments Starting ₹25K": {
-        description: "Premium segment ad with clear price anchor for luxury apartments",
-        imagePrompt: "Luxury apartment exterior with modern architecture, swimming pool and amenities visible, text 'LUXURY APARTMENTS' in premium gold font, price tag 'Starting ₹25,000/mo', upscale and sophisticated design, twilight photography style",
-        videoPrompt: "22-second luxury video: Premium apartment showcase - grand lobby, infinity pool, modern gym, spacious apartments with city views, text overlays highlighting amenities and price, elegant background music, cinematic quality, end with 'Experience Luxury Living' CTA",
-        adCopy: "🌟 Luxury Apartments Starting ₹25K\n\nLive the life you deserve in premium residences.\n\n🔹 World-class amenities\n🔹 Prime locations\n🔹 Fully furnished options\n🔹 Starting ₹25,000/month\n\nExperience luxury →"
-      }
     };
 
     return details[title] || {
